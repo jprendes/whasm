@@ -2,4 +2,5 @@
 
 members = [
     "whasm",
+    "whasm-grammar-derive",
 ]
