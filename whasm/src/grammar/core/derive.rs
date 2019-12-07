@@ -21,6 +21,28 @@ mod test {
     }
 
     #[derive(Grammar, Debug, PartialEq)]
+    struct MatchingStruct {
+        #[matching(42)]
+        data: u32,
+    }
+
+    #[test]
+    fn can_deserialize_matching_struct() {
+        let mut iter = [0x2A].iter().copied();
+        let result: MatchingStruct = deserialize(&mut iter).unwrap();
+        assert_eq!(result, MatchingStruct {
+            data: 42,
+        });
+    }
+
+    #[test]
+    #[should_panic]
+    fn fails_to_deserialize_matching_struct_that_doesnt_match() {
+        let mut iter = [0x2B].iter().copied();
+        let _: MatchingStruct = deserialize(&mut iter).unwrap();
+    }
+
+    #[derive(Grammar, Debug, PartialEq)]
     #[sized]
     struct SizedStruct {
         data: u32,

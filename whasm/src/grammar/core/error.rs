@@ -22,4 +22,15 @@ pub enum Error {
     RemainingBytesInStream {
         ident: String,
     },
+
+    #[error(display = "Found unexpected `{}` instruction.", ident)]
+    UnexpectedInstruction {
+        ident: String,
+    },
+
+    #[error(display = "Unsatisfied match. Expected value `{}`, but found `{}`.", expected, actual)]
+    UnsatisfiedMatch {
+        expected: String,
+        actual: String,
+    },
 }

@@ -5,7 +5,7 @@ use proc_macro::TokenStream;
 use syn::{ parse_macro_input, DeriveInput };
 
 #[proc_macro_error]
-#[proc_macro_derive(Grammar, attributes(discriminant, forward, sized))]
+#[proc_macro_derive(Grammar, attributes(discriminant, forward, sized, matching))]
 pub fn wasm_grammar_derive(input: TokenStream) -> TokenStream {
     let derive = parse_macro_input!(input as DeriveInput);
     impl_wasm_grammar(derive).into()

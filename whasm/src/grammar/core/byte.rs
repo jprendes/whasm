@@ -23,6 +23,12 @@ impl std::cmp::PartialEq<u8> for Byte {
     }
 }
 
+impl std::cmp::PartialEq<char> for Byte {
+    fn eq(&self, other: &char) -> bool {
+        (self.0 as char) == *other
+    }
+}
+
 #[cfg(test)]
 mod test {
     use crate::grammar::*;
