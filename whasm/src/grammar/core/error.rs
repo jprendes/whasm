@@ -18,7 +18,7 @@ pub enum Error {
     #[error(display = "Unexpected end of stream.")]
     UnexpectedEndOfStream,
 
-    #[error(display = "Size of {} is smaller than expected.", ident)]
+    #[error(display = "Size of `{}` is smaller than expected.", ident)]
     RemainingBytesInStream {
         ident: String,
     },

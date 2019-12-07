@@ -39,20 +39,14 @@ mod test {
     #[should_panic]
     fn fails_to_deserialize_sized_struct_with_smaller_size() {
         let mut iter = [0x05, 0xAA, 0x80, 0x80, 0x00, 0x00].iter().copied();
-        let result: SizedStruct = deserialize(&mut iter).unwrap();
-        assert_eq!(result, SizedStruct {
-            data: 42,
-        });
+        let _: SizedStruct = deserialize(&mut iter).unwrap();
     }
 
     #[test]
     #[should_panic]
     fn fails_to_deserialize_sized_struct_with_bigger_size() {
         let mut iter = [0x04, 0xAA, 0x80, 0x80, 0x80, 0x00].iter().copied();
-        let result: SizedStruct = deserialize(&mut iter).unwrap();
-        assert_eq!(result, SizedStruct {
-            data: 42,
-        });
+        let _: SizedStruct = deserialize(&mut iter).unwrap();
     }
 
     #[derive(Grammar, Debug, PartialEq)]
@@ -103,16 +97,14 @@ mod test {
     #[should_panic]
     fn fails_to_deserialize_sized_enum_with_smaller_size() {
         let mut iter = [0x11, 0x05, 0xAA, 0x80, 0x80, 0x00, 0x00].iter().copied();
-        let result: SizedEnum = deserialize(&mut iter).unwrap();
-        assert_eq!(result, SizedEnum::V1(42));
+        let _: SizedEnum = deserialize(&mut iter).unwrap();
     }
 
     #[test]
     #[should_panic]
     fn fails_to_deserialize_sized_enum_with_bigger_size() {
         let mut iter = [0x11, 0x04, 0xAA, 0x80, 0x80, 0x80, 0x00].iter().copied();
-        let result: SizedEnum = deserialize(&mut iter).unwrap();
-        assert_eq!(result, SizedEnum::V1(42));
+        let _: SizedEnum = deserialize(&mut iter).unwrap();
     }
 
     #[derive(Grammar, Debug, PartialEq)]
