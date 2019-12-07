@@ -11,4 +11,7 @@ license = "MIT OR Apache-2.0"
 [dependencies]
 num-traits = "0.2"
 err-derive = "0.2"
-whasm-grammar-derive = { path = "../whasm-grammar-derive" }
+
+[dependencies.whasm-grammar-derive]
+path = "../whasm-grammar-derive"
+version = "0.1"
