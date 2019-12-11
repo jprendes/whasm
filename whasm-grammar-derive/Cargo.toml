@@ -1,6 +1,6 @@
 [package]
 name = "whasm-grammar-derive"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["webbracket"]
 edition = "2018"
 description = "Whasm's macro to derive the Grammar trait."

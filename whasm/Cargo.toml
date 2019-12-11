@@ -1,6 +1,6 @@
 [package]
 name = "whasm"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["webbracket"]
 edition = "2018"
 description = "Yet another Rust library for WebAssembly."
