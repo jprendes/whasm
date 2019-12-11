@@ -1,7 +1,5 @@
-use super::*;
-use super::ty::*;
-use super::idx::*;
-use super::instruction::*;
+use crate as whasm;
+use self::whasm::grammar::{ *, idx::*, ty::*, instr::* };
 
 #[derive(Debug, PartialEq, Grammar)]
 #[sized]

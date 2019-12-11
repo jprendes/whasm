@@ -1,5 +1,5 @@
-use super::*;
-use super::section::*;
+use crate as whasm;
+use self::whasm::grammar::{ *, section::* };
 
 #[derive(Debug, PartialEq, Grammar)]
 pub struct Module {

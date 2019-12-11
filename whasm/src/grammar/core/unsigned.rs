@@ -1,3 +1,44 @@
+//! This module defines the deserialization of unsigned integer numbers
+//! (`u8`, `u16`, `u32`, `u64` and `usize`).
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0x2A].iter().copied();
+//! let result: u8 = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, 42);
+//! ```
+//! 
+//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that signed
+//! integer numbers should be serialized using signed LEB-128 encoding. This means that a number
+//! can be encoded with a variable number of bytes.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0xAA, 0x80, 0x00].iter().copied();
+//! let result: u8 = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, 42);
+//! ```
+//! 
+//! Deserializing a signed integer will return the `Err(_)` variant if the iterator is exhausted
+//! before completing the deserialization.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0xAA, 0x80].iter().copied();
+//! let result: Result<u8> = deserialize(&mut iter);
+//! assert!(result.is_err());
+//! ```
+//! 
+//! Deserialization will also return the `Err(_)` variant if the encoded numeric value is out of
+//! bound for the type being deserialized.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0xAA, 0x02].iter().copied();
+//! let result: Result<u8> = deserialize(&mut iter);
+//! assert!(result.is_err());
+//! ```
+
 use super::*;
 use num_traits::*;
 
@@ -62,7 +103,8 @@ impl Grammar for usize {
 
 #[cfg(test)]
 mod test {
-    use crate::grammar::*;
+    use crate as whasm;
+    use whasm::grammar::*;
 
     // spec positive examples
     #[test]

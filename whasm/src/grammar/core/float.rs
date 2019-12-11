@@ -1,3 +1,15 @@
+//! This module defines the deserialization of floating point numbers (`f32` and `f64`).
+//! 
+//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that floating
+//! point numbers should be serialized using little-endian IEEE 754 encoding.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0xDB, 0x0F, 0x49, 0x40].iter().copied();
+//! let result: f32 = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, std::f32::consts::PI);
+//! ```
+
 use super::*;
 use num_traits::*;
 
@@ -25,7 +37,8 @@ impl Grammar for f64 {
 
 #[cfg(test)]
 mod test {
-    use crate::grammar::*;
+    use crate as whasm;
+    use whasm::grammar::*;
 
     #[test]
     fn can_deserialize_f32_pi() {

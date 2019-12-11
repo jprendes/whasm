@@ -13,7 +13,8 @@ impl<T: Grammar> Grammar for Vec<T> {
 
 #[cfg(test)]
 mod test {
-    use crate::grammar::*;
+    use crate as whasm;
+    use whasm::grammar::*;
 
     #[test]
     fn can_deserialize_vec() {

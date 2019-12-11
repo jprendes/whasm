@@ -1,3 +1,8 @@
+//! This module defines the deserialization of `String`s.
+//! 
+//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that `String`s
+//! should be encoded as a `Vec<Byte>` using UTF-8 encoding.
+
 use super::*;
 
 impl Grammar for String {
@@ -10,7 +15,8 @@ impl Grammar for String {
 
 #[cfg(test)]
 mod test {
-    use crate::grammar::*;
+    use crate as whasm;
+    use whasm::grammar::*;
 
     #[test]
     fn can_deserialize_ascii_string() {

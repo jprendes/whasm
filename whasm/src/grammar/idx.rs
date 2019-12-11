@@ -1,4 +1,5 @@
-use super::*;
+use crate as whasm;
+use self::whasm::grammar::*;
 
 #[derive(Debug, PartialEq, Grammar)]
 pub struct TypeIdx(u32);

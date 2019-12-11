@@ -1,3 +1,5 @@
+//! This module defines the deserialization of arrays of with 8 or less elements.
+
 use super::*;
 
 impl<T: Grammar> Grammar for [T; 0] {
@@ -98,7 +100,8 @@ impl<T: Grammar> Grammar for [T; 8] {
 
 #[cfg(test)]
 mod test {
-    use crate::grammar::*;
+    use crate as whasm;
+    use whasm::grammar::*;
 
     #[test]
     fn can_deserialize_empty_array() {

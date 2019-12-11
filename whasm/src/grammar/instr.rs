@@ -1,6 +1,5 @@
-use super::*;
-use super::idx::*;
-use super::ty::*;
+use crate as whasm;
+use self::whasm::grammar::{ *, idx::*, ty::* };
 
 #[derive(Debug, PartialEq, Grammar)]
 pub enum Instruction {
