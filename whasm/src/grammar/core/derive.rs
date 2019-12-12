@@ -1,4 +1,84 @@
 //! This module provides a derive to implement the `Grammar` trait on `struct`s and `enum`s.
+//! 
+//! # Example
+//! 
+//! The `Grammar` derive macro allows defining fairly complex grammars declaratively.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! # #[derive(PartialEq, Debug)]
+//! #[derive(Grammar)]
+//! struct Person {
+//!     name: String,
+//!     age: u32,
+//!     languages: Vec<Language>, 
+//! }
+//! 
+//! # #[derive(PartialEq, Debug)]
+//! #[derive(Grammar)]
+//! enum Language {
+//!     #[discriminant(0x00)] English,
+//!     #[discriminant(0x01)] French,
+//!     #[discriminant(0x02)] Spanish,
+//!     #[forward] Programming(ProgrammingLanguage),
+//! }
+//! 
+//! # #[derive(PartialEq, Debug)]
+//! #[derive(Grammar)]
+//! enum ProgrammingLanguage {
+//!     #[discriminant(0x04)] Rust {
+//!         edition: u32
+//!     },
+//!     #[discriminant(0x05)] Cpp,
+//!     #[discriminant(0x06)] JavaScript,
+//! }
+//! ```
+//! 
+//! These grammars can be deserialized using the `deserialize` function.
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! # #[derive(PartialEq, Debug)]
+//! # #[derive(Grammar)]
+//! # struct Person {
+//! #     name: String,
+//! #     age: u32,
+//! #     languages: Vec<Language>, 
+//! # }
+//! # 
+//! # #[derive(PartialEq, Debug)]
+//! # #[derive(Grammar)]
+//! # enum Language {
+//! #     #[discriminant(0x00)] English,
+//! #     #[discriminant(0x01)] French,
+//! #     #[discriminant(0x02)] Spanish,
+//! #     #[forward] Programming(ProgrammingLanguage),
+//! # }
+//! # 
+//! # #[derive(PartialEq, Debug)]
+//! # #[derive(Grammar)]
+//! # enum ProgrammingLanguage {
+//! #     #[discriminant(0x04)] Rust {
+//! #         edition: u32
+//! #     },
+//! #     #[discriminant(0x05)] Cpp,
+//! #     #[discriminant(0x06)] JavaScript,
+//! # }
+//! let mut iter = [0x03, 0x4A, 0x6F, 0x65, 0x2A, 0x02, 0x00, 0x04, 0xE2, 0x0F].iter().copied();
+//! let result: Person = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, Person {
+//!     name: String::from("Joe"),
+//!     age: 42,
+//!     languages: vec![
+//!         Language::English,
+//!         Language::Programming(
+//!             ProgrammingLanguage::Rust{
+//!                 edition: 2018
+//!             }
+//!         )
+//!     ]
+//! });
+//! ```
 
 /// The `Grammar` derive macro provides a mechanism to declaratively define `Grammar` elements.
 /// The macro can be applied to `struct`s and `enum`s.
@@ -20,7 +100,8 @@
 /// ```
 /// 
 /// In this case the `struct` is obtained by deserializing each field in the order in which they
-/// are declared in the `struct`. Unit `struct`s do not consume any bytes.
+/// are declared in the `struct`. The struct fields types must implement the `Grammar` trait.
+/// Unit `struct`s do not consume any bytes.
 /// 
 /// ```
 /// # use whasm::grammar::*;

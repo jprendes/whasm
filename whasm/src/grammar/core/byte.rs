@@ -1,4 +1,17 @@
 //! This module defines the deserialization of `whasm::grammar::Byte`.
+//! 
+//! A `Byte` is similar to an `u8`, except that `u8`s are encoded using LEB-128 and may require
+//! several bytes to encode, while a `Byte` is interpreted raw from the input iterator and
+//! deserializing it consumes exactly one element from the iterator.
+//! 
+//! # Example
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0x8E].iter().copied();
+//! let Byte(result) = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, 0x8E);
+//! ```
 
 use super::*;
 
@@ -64,6 +77,14 @@ impl std::cmp::PartialEq<char> for Byte {
     fn eq(&self, other: &char) -> bool {
         (self.0 as char) == *other
     }
+}
+
+impl From<Byte> for u8 {
+    fn from(byte: Byte) -> u8 { byte.0 }
+}
+
+impl From<Byte> for char {
+    fn from(byte: Byte) -> char { byte.0.into() }
 }
 
 #[cfg(test)]

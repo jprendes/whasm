@@ -3,6 +3,10 @@
 //! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that floating
 //! point numbers should be serialized using little-endian IEEE 754 encoding.
 //! 
+//! # Example
+//! 
+//! Deserializing an `f32` always consumes 4 bytes from the input iterator.
+//! 
 //! ```
 //! # use whasm::grammar::*;
 //! let mut iter = [0xDB, 0x0F, 0x49, 0x40].iter().copied();

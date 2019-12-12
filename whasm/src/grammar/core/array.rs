@@ -1,4 +1,18 @@
 //! This module defines the deserialization of arrays of with 8 or less elements.
+//! 
+//! A serialized array of size `N` will deserialize `N` elements of the same type.
+//! The array elements must implement the `Grammar` trait.
+//! An encoded array differs from an encoded `Vec<_>` in that the array does not encode its size,
+//! since the size is known in advance.
+//! 
+//! # Example
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0x01, 0x02, 0x03, 0x04].iter().copied();
+//! let result: [Byte; 4] = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, [0x01, 0x02, 0x03, 0x04]);
+//! ```
 
 use super::*;
 

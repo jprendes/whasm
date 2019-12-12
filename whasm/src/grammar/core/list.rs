@@ -1,3 +1,18 @@
+//! This module defines the deserialization of `whasm::grammar::List`.
+//! 
+//! A `List` is similar to a `Vec<_>`, except that the encoding of `Vec<_>` specifies the total
+//! number of elements and that many elements are deserialized, while a `List` does not encode the
+//! total number of elements and deserializes elements until the input iterator is exhausted.
+//! 
+//! # Example
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0x01, 0x02, 0x03, 0x04].iter().copied();
+//! let result: List<Byte> = deserialize(&mut iter).unwrap();
+//! assert_eq!(result, [0x01, 0x02, 0x03, 0x04]);
+//! ```
+
 use super::*;
 
 /// A `List<T>` is a wrapper for a `Vec<T>`. It differs from a `Vec<T>` on how it is deserialized.
@@ -14,8 +29,8 @@ use super::*;
 /// ```
 /// # use whasm::grammar::*;
 /// let mut iter = [0x01, 0x02, 0x03, 0x04].iter().copied();
-/// let List(result): List<Byte> = deserialize(&mut iter).unwrap();
-/// assert_eq!(result, vec![0x01, 0x02, 0x03, 0x04]);
+/// let result: List<Byte> = deserialize(&mut iter).unwrap();
+/// assert_eq!(result, [0x01, 0x02, 0x03, 0x04]);
 /// assert_eq!(iter.next(), None);
 /// ```
 /// 
@@ -43,6 +58,17 @@ impl<T: Grammar> Grammar for List<T> {
     }
 }
 
+impl<A, B> std::cmp::PartialEq<B> for List<A>
+where A: Grammar, Vec<A>: PartialEq<B> {
+    fn eq(&self, other: &B) -> bool {
+        self.0 == *other
+    }
+}
+
+impl<T: Grammar> Into<Vec<T>> for List<T> {
+    fn into(self) -> Vec<T> { self.0 }
+}
+
 #[cfg(test)]
 mod test {
     use crate as whasm;
@@ -51,7 +77,7 @@ mod test {
     #[test]
     fn can_deserialize_list() {
         let mut iter = [0x2A, 0xAA, 0x00, 0xAA, 0x80, 0x00].iter().copied();
-        let List(result): List<u8> = deserialize(&mut iter).unwrap();
+        let result: List<u8> = deserialize(&mut iter).unwrap();
         assert_eq!(result, [42, 42, 42]);
     }
 }

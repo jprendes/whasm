@@ -1,4 +1,14 @@
 //! This module provides an `enum`, with variants for each type of error produced by `whasm::grammar`.
+//! 
+//! # Example
+//! 
+//! ```
+//! # use whasm::grammar::*;
+//! let mut iter = [0x00].iter().copied();
+//! let result: Result<f32> = deserialize(&mut iter);
+//! let err = result.unwrap_err().downcast::<Error>().unwrap();
+//! assert_eq!(*err, Error::UnexpectedEndOfStream);
+//! ```
 
 use err_derive::Error;
 
