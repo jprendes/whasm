@@ -1,3 +1,18 @@
+//! This module defines all the grammar elements defined in the release 1.0 of the
+//! [WebAssembly Specification](https://webassembly.github.io/spec/). It also defines the
+//! deserialization of these elements from the WebAssembly binary representation.
+//! 
+//! # Example
+//! 
+//! Deserializing the smallest possible WebAssembly file, a `Module` with no `Section`s.
+//! 
+//! ```
+//! # use whasm::grammar::prelude::*;
+//! let mut iter = [0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00].iter().copied();
+//! let Module{ sections, .. } = deserialize(&mut iter).unwrap();
+//! assert_eq!(sections, []);
+//! ```
+
 pub mod core;
 pub use self::core::*;
 
@@ -6,6 +21,8 @@ pub mod instr;
 pub mod module;
 pub mod section;
 pub mod ty;
+
+pub mod prelude;
 
 #[cfg(test)]
 mod test {

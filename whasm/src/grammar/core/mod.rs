@@ -1,8 +1,9 @@
 //! This module provides the building blocks to declaratively define the grammar in the
 //! [WebAssembly Specification](https://webassembly.github.io/spec/).
 //! 
-//! With the current functionalities in `whasm::grammar::core`, all the grammar elements in release
-//! 1.0 of the specification can be expressed declaratively.
+//! With the current functionalities in `whasm::grammar::core`, almost all the grammar elements in
+//! release 1.0 of the specification can be expressed declaratively (the exceptions are the
+//! `IfInstr` instruction and `Expression` blocks).
 
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
