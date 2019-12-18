@@ -199,14 +199,6 @@ pub enum Instruction {
 }
 
 #[derive(Debug, PartialEq, Grammar)]
-pub enum LoadInstr {
-    #[discriminant(0x28)] I32(MemArg),
-    #[discriminant(0x29)] I64(MemArg),
-    #[discriminant(0x2A)] F32(MemArg),
-    #[discriminant(0x2B)] F64(MemArg),
-}
-
-#[derive(Debug, PartialEq, Grammar)]
 pub struct MemArg {
     pub align: u32,
     pub offset: u32,

@@ -55,5 +55,6 @@ pub mod derive;
 
 pub use self::byte::Byte;
 pub use self::list::List;
+pub use self::vec::VecVec;
 pub use self::error::Error;
 pub use self::derive::Grammar;

@@ -2,22 +2,22 @@ use crate as whasm;
 use self::whasm::grammar::*;
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct TypeIdx(u32);
+pub struct TypeIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct FuncIdx(u32);
+pub struct FuncIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct TableIdx(u32);
+pub struct TableIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct MemIdx(u32);
+pub struct MemIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct GlobalIdx(u32);
+pub struct GlobalIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct LocalIdx(u32);
+pub struct LocalIdx(pub u32);
 
 #[derive(Debug, PartialEq, Grammar)]
-pub struct LabelIdx(u32);
+pub struct LabelIdx(pub u32);

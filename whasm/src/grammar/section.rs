@@ -137,14 +137,8 @@ pub struct CodeSection {
 #[derive(Debug, PartialEq, Grammar)]
 #[sized]
 pub struct Function {
-    pub locals: Vec<Locals>,
+    pub locals: VecVec<ValType>,
     pub code: Expression,
-}
-
-#[derive(Debug, PartialEq, Grammar)]
-pub struct Locals {
-    pub n: u32,
-    pub ty: ValType,
 }
 
 #[derive(Debug, PartialEq, Grammar)]
