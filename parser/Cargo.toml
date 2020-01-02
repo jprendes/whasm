@@ -1,0 +1,17 @@
+[package]
+name = "parser"
+version = "0.1.0"
+authors = ["webbracket"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[dependencies.whasm]
+path = "../whasm"
+version = "0.1"
+
+[dependencies.whasm-grammar-derive]
+path = "../whasm-grammar-derive"
+version = "0.1"
