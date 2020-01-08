@@ -11,10 +11,6 @@ pub use self::error::Error;
 
 pub type Result<T> = std::result::Result<T, error::Error>;
 
-pub trait Parse<T> {
-    fn parse(&mut self) -> Result<T>;
-}
-
 pub trait WasmBinary: Iterator<Item=u8>
 where Self: std::marker::Sized {
     fn parse<T: WasmBinaryParse>(&mut self) -> Result<T> {

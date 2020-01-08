@@ -19,18 +19,7 @@ impl WasmBinaryParse for module::Module {
         }
 
         let mut func_types: Vec<idx::Type> = vec![];
-        let mut result = module::Module {
-            types: vec![],
-            funcs: vec![],
-            tables: vec![],
-            mems: vec![],
-            globals: vec![],
-            elem: vec![],
-            data: vec![],
-            start: None,
-            imports: vec![],
-            exports: vec![],
-        };
+        let mut result = module::Module::default();
 
         let mut bin = bin.peekable();
         let mut last_id = 0;

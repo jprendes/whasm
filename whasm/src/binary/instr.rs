@@ -11,6 +11,13 @@ impl WasmBinaryParse for instr::Expr {
     }
 }
 
+impl WasmBinaryParse for instr::ConstExpr {
+    fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {
+        let instr::Expr(expr) = bin.parse()?;
+        Ok(instr::ConstExpr(expr))
+    }
+}
+
 impl WasmBinaryParse for instr::Instr {
     fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {
         let Byte(byte) = bin.parse()?;

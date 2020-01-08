@@ -45,11 +45,11 @@ impl WasmBinaryParse for ty::RetVal {
     fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {
         let Byte(byte) = bin.parse()?;
         match byte {
-            0x40 => Ok(Self::Empty),
+            0x40 => Ok(Self(vec![])),
             _ => {
                 let byte = [byte];
                 let mut iter = byte.iter().copied();
-                Ok(Self::Some(iter.parse()?))
+                Ok(Self(vec![iter.parse()?]))
             }
         }
     }

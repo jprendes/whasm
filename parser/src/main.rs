@@ -1,6 +1,7 @@
 use std::io::Read;
 use whasm::structure::{module::Module};
 use whasm::binary::{WasmBinary};
+use whasm::validation::{ValidationEntry};
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -35,6 +36,13 @@ fn main() {
             std::process::exit(1);
         });
 
+    module.validate()
+        .unwrap_or_else(|err| {
+            println!("Error validating file \"{}\".", config.filename);
+            println!("{}", err);
+            std::process::exit(1);
+        });
+
     if config.print {
         println!("{:#?}", module);
     }
@@ -48,7 +56,7 @@ struct Config {
 impl Config {
     fn new(args: &[String]) -> Result<Config, Box<dyn std::error::Error>> {
         let mut print = false;
-        let mut filename = "/home/jprendes/Projects/Classic/release/matlab.wasm".into();
+        let mut filename = "".into();
 
         let mut args = args.iter();
         let _binname = args.next().ok_or("Not enough arguments.")?;
@@ -66,7 +74,7 @@ impl Config {
         if filename == "" {
             return Err("Not enough arguments.")?;
         }
-        
+
         Ok( Config { filename, print } )
     }
 }

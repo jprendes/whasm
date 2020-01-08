@@ -1,6 +1,7 @@
 use super::{ty, idx, instr};
 
 #[derive(Debug, PartialEq)]
+#[derive(Default)]
 pub struct Module {
     pub types: Vec<ty::Func>,
     pub funcs: Vec<Func>,
@@ -34,20 +35,20 @@ pub struct Mem {
 #[derive(Debug, PartialEq)]
 pub struct Global {
     pub ty: ty::Global,
-    pub init: instr::Expr,
+    pub init: instr::ConstExpr,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct Elem {
     pub table: idx::Table,
-    pub offset: instr::Expr,
+    pub offset: instr::ConstExpr,
     pub init: Vec<idx::Func>,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct Data {
     pub mem: idx::Mem,
-    pub offset: instr::Expr,
+    pub offset: instr::ConstExpr,
     pub init: Vec<u8>,
 }
 

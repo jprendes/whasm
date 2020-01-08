@@ -19,10 +19,7 @@ pub enum Elem {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum RetVal {
-    Empty,
-    Some(Val),
-}
+pub struct RetVal (pub Vec<Val>);
 
 #[derive(Debug, PartialEq)]
 pub struct Func {

@@ -4,6 +4,9 @@ use super::{ty, idx};
 pub struct Expr(pub Vec<Instr>);
 
 #[derive(Debug, PartialEq)]
+pub struct ConstExpr(pub Vec<Instr>);
+
+#[derive(Debug, PartialEq)]
 pub enum Instr {
     // Control flow
     /* 0x00 */ Unreachable,
@@ -19,7 +22,7 @@ pub enum Instr {
     /* 0x0E */ BrTable(Vec<idx::Label>, idx::Label),
     /* 0x0F */ Return,
     /* 0x10 */ Call(idx::Func),
-    /* 0x11 */ CallIndirect(idx::Func, idx::Table),
+    /* 0x11 */ CallIndirect(idx::Type, idx::Table),
         // ... reserved ...
     // Parametric
     /* 0x1A */ Drop,
