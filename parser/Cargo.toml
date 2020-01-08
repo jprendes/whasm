@@ -11,7 +11,3 @@ edition = "2018"
 [dependencies.whasm]
 path = "../whasm"
 version = "0.1"
-
-[dependencies.whasm-grammar-derive]
-path = "../whasm-grammar-derive"
-version = "0.1"
