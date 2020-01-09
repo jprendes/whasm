@@ -6,6 +6,8 @@ pub mod instr;
 pub mod module;
 pub mod ty;
 
+pub use self::core::proxy::WasmBinaryParseProxy;
+
 pub use self::core::byte::Byte;
 pub use self::error::Error;
 

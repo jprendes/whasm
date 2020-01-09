@@ -1,3 +1,30 @@
+//! This module defines the parsing of floating point numbers (`f32` and `f64`).
+//! 
+//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that floating
+//! point numbers should be serialized using little-endian IEEE 754 encoding.
+//! 
+//! # Example
+//! 
+//! Parsing an `f32` always consumes 4 bytes from the iterator.
+//! 
+//! ```
+//! # use whasm::binary::WasmBinary;
+//! let mut iter = [0xDB, 0x0F, 0x49, 0x40].iter().copied();
+//! let result: f32 = iter.parse().unwrap();
+//! assert_eq!(result, std::f32::consts::PI);
+//! assert!(iter.next().is_none());
+//! ```
+//! 
+//! Parsing an `f64` always consumes 8 bytes from the iterator.
+//! 
+//! ```
+//! # use whasm::binary::WasmBinary;
+//! let mut iter = [0x18, 0x2D, 0x44, 0x54, 0xFB, 0x21, 0x09, 0x40].iter().copied();
+//! let result: f64 = iter.parse().unwrap();
+//! assert_eq!(result, std::f64::consts::PI);
+//! assert!(iter.next().is_none());
+//! ```
+
 use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte};
 use num_traits::*;
 
@@ -22,4 +49,23 @@ where T: Float + Sized {
         unsafe { bytes.offset(n as isize).write_unaligned(byte) };
     }
     Ok(result)
+}
+
+#[cfg(test)]
+mod test {
+    use crate::binary::WasmBinary;
+
+    #[test]
+    fn can_parse_f32_pi() {
+        let mut iter = [0xDB, 0x0F, 0x49, 0x40].iter().copied();
+        let result: f32 = iter.parse().unwrap();
+        assert_eq!(result, std::f32::consts::PI);
+    }
+
+    #[test]
+    fn can_parse_f64_pi() {
+        let mut iter = [0x18, 0x2D, 0x44, 0x54, 0xFB, 0x21, 0x09, 0x40].iter().copied();
+        let result: f64 = iter.parse().unwrap();
+        assert_eq!(result, std::f64::consts::PI);
+    }
 }

@@ -1,3 +1,34 @@
+//! This module defines the parsing of signed integer numbers
+//! (`i8`, `i16`, `i32`, `i64` and `isize`).
+//! 
+//! ```
+//! # use whasm::binary::WasmBinary;
+//! let mut iter = [0x56].iter().copied();
+//! let result: i8 = iter.parse().unwrap();
+//! assert_eq!(result, -42);
+//! ```
+//! 
+//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that signed
+//! integer numbers should be encoded using signed LEB-128 encoding. This means that any number
+//! can be encoded with different number of bytes.
+//! 
+//! ```
+//! # use whasm::binary::WasmBinary;
+//! let mut iter = [0xD6, 0xFF, 0x7F].iter().copied();
+//! let result: i8 = iter.parse().unwrap();
+//! assert_eq!(result, -42);
+//! ```
+//! 
+//! If the encoded numeric value is out of range for the resulting type parsing returns
+//! `Err(Error::OutOfRangeSignedInteger)`.
+//! 
+//! ```
+//! # use whasm::binary::{WasmBinary, Result, Error};
+//! let mut iter = [0xD6, 0x7E].iter().copied();
+//! let result: Result<i8> = iter.parse();
+//! assert_eq!(result, Err(Error::OutOfRangeSignedInteger));
+//! ```
+
 use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, Error};
 use num_traits::*;
 
@@ -63,4 +94,75 @@ where T: PrimInt + Signed + FromPrimitive {
         result = result | ( (!T::zero()) << shift );
     }
     Ok(result)
+}
+
+#[cfg(test)]
+mod test {
+    use crate::binary::{WasmBinary, Result, Error};
+
+    // spec positive examples
+    #[test]
+    fn can_parse_spec_i8() {
+        let mut iter = [0x7E].iter().copied();
+        let result: i8 = iter.parse().unwrap();
+        assert_eq!(result, -2);
+    }
+
+    #[test]
+    fn can_parse_spec_multibyte_i8() {
+        let mut iter = [0xFE, 0x7F].iter().copied();
+        let result: i8 = iter.parse().unwrap();
+        assert_eq!(result, -2);
+    }
+
+    #[test]
+    fn can_parse_second_spec_multibyte_i8() {
+        let mut iter = [0xFE, 0xFF, 0x7F].iter().copied();
+        let result: i8 = iter.parse().unwrap();
+        assert_eq!(result, -2);
+    }
+
+    // spec negative examples
+    #[test]
+    fn fails_to_parse_spec_multibyte_i8() {
+        let mut iter = [0x83, 0x3E].iter().copied();
+        let result: Result<i8> = iter.parse();
+        assert_eq!(result, Err(Error::OutOfRangeSignedInteger));
+    }
+
+    #[test]
+    fn fails_to_parse_second_spec_multibyte_i8() {
+        let mut iter = [0xFF, 0x7B].iter().copied();
+        let result: Result<i8> = iter.parse();
+        assert_eq!(result, Err(Error::OutOfRangeSignedInteger));
+    }
+
+    // i8 tests
+    #[test]
+    fn can_parse_positive_i8() {
+        let mut iter = [0x2A].iter().copied();
+        let result: i8 = iter.parse().unwrap();
+        assert_eq!(result, 42);
+    }
+
+    #[test]
+    fn can_parse_multibyte_positive_i8() {
+        let mut iter = [0xEA, 0x00].iter().copied();
+        let result: i8 = iter.parse().unwrap();
+        assert_eq!(result, 106);
+    }
+
+    #[test]
+    fn fails_to_parse_overflowing_positive_i8() {
+        let mut iter = [0xD6, 0x81, 0x80, 0x00].iter().copied();
+        let result: Result<i8> = iter.parse();
+        assert_eq!(result, Err(Error::OutOfRangeSignedInteger));
+    }
+
+    #[test]
+    fn fails_to_parse_overflowing_negative_i8() {
+        let mut iter = [0xD6, 0xFE, 0x80, 0x7F].iter().copied();
+        let result: Result<i8> = iter.parse();
+        assert_eq!(result, Err(Error::OutOfRangeSignedInteger));
+    }
 }

@@ -1,7 +1,7 @@
 use super::Byte;
 use err_derive::Error;
 
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq)]
 pub enum Error {
     #[error(display = "Unexpected end of file.")]
     UnexpectedEndOfFile,
