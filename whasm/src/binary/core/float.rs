@@ -1,7 +1,7 @@
-//! This module defines the parsing of floating point numbers (`f32` and `f64`).
+//! This module defines the parsing of floating point numbers.
 //! 
-//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that floating
-//! point numbers should be serialized using little-endian IEEE 754 encoding.
+//! Floating point numbers are encoded with the little-endian IEEE-754 format.
+//! The floating point types are `f32` and `f64`.
 //! 
 //! # Example
 //! 

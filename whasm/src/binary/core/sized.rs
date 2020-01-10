@@ -1,10 +1,10 @@
-//! This module defines the parsing of `whasm::binary::core::sized::Sized`.
+//! This module defines the parsing of elements whose binary encoding includes their size in bytes.
 //! 
-//! A `Sized` is a proxy type. Parsing a type using this proxy means that the encoded value is
-//! preceded by an `u32` representing the size in bytes of the encoded value.
+//! The encoding of a `whasm::binary::core::sized::Sized<T>` proxy type starts with an `u32`
+//! indicating the size in bytes of the encoded value.
 //! 
-//! A helper type `Consume` is defined to consume all bytes available in the iterator. This is
-//! useful to skip the parsing of a Sized element.
+//! The helper type `Consume` consumes all bytes available in the iterator. This is useful to skip
+//! the parsing of a Sized element.
 //! 
 //! # Example
 //! 
@@ -40,12 +40,10 @@
 //! assert_eq!(result, 0x2C);
 //! ```
 
-use crate::binary::{WasmBinaryParse, WasmBinary, Result, Error, WasmBinaryParseProxy};
+use crate::binary::{WasmBinary, WasmBinaryParse, WasmBinaryParseProxy, Result, Error};
 
 pub struct Sized<T> ( T );
-impl<T: WasmBinaryParse> WasmBinaryParseProxy for Sized<T> {
-    type Inner = T;
-
+impl<T: WasmBinaryParse> WasmBinaryParse for Sized<T> {
     fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {
         let size: u32 = bin.parse()?;
         let mut count = 0;
@@ -59,7 +57,9 @@ impl<T: WasmBinaryParse> WasmBinaryParseProxy for Sized<T> {
             Ok(Self(result))
         }
     }
-
+}
+impl<T: WasmBinaryParse> WasmBinaryParseProxy for Sized<T> {
+    type Inner = T;
     fn unwrap(self) -> Self::Inner { self.0 }
 }
 

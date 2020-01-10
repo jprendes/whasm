@@ -1,23 +1,20 @@
-//! This module defines the parsing of `whasm::binary::Byte`.
+//! This module implements parsing of bytes.
 //! 
-//! A `Byte` is a proxy type for a `u8`. Simple `u8`s are encoded using LEB-128 and may require
-//! several bytes to encode, while a `u8` parsed though a `Byte` is interpreted raw from the input
-//! iterator and parsing it consumes exactly one byte from the iterator.
+//! The `Byte` proxy type wraps a `u8` changing its parsing from LEB-182 encoding to raw bytes.
 //! 
-//! # Example
-//! 
-//! ```
-//! # use whasm::binary::{WasmBinary, Byte};
-//! let mut iter = [0x8E].iter().copied();
-//! let Byte(result) = iter.parse().unwrap();
-//! assert_eq!(result, 0x8E);
-//! ```
+//! Parsing a `Byte` rather than calling `next` on the iterator is a convenient way to obtain a
+//! `Result<Byte>` with a meaningful error state rather than an Option<u8>.
+//! Because of this, it is encouraged to parse `Byte`s from an iterator rather than directly
+//! calling `next`.
 
-use crate::binary::{WasmBinary, WasmBinaryParseProxy, Result, Error};
+use crate::binary::{WasmBinary, WasmBinaryParse, WasmBinaryParseProxy, Result, Error};
 
-/// `Byte` is a proxy for an `u8` representing a byte of information. It differs from an `u8` on
-/// how it is parsed. A `Byte` reads exactly one byte from the input iterator, while a `u8` could
-/// potentially read several bytes (since unsigned integers are encoded using LEB-128).
+/// `Byte` is a proxy type that wraps a `u8`.
+/// It implements the `WasmBinaryParseProxy<Inner=u8>` trait.
+/// The `u8` obtained though a `Byte` is a raw byte of information (not an unsigned number).
+/// It differs from an unwrapped `u8` on its parsing: a `Byte` reads exactly one byte from the
+/// input iterator, while an unwrapped `u8` is encoded using LEB-128 and could potentially read
+/// several bytes.
 /// 
 /// # Example
 /// 
@@ -37,8 +34,7 @@ use crate::binary::{WasmBinary, WasmBinaryParseProxy, Result, Error};
 /// assert_eq!(result, 42);
 /// ```
 /// 
-/// If there are no bytes left in the iterator, parsing returns
-/// `Error(Error::UnexpectedEndOfFile)`.
+/// If there are no bytes left in the iterator parsing returns `Error(Error::UnexpectedEndOfFile)`.
 /// 
 /// ```
 /// # use whasm::binary::{WasmBinary, Result, Byte, Error};
@@ -46,23 +42,18 @@ use crate::binary::{WasmBinary, WasmBinaryParseProxy, Result, Error};
 /// let result: Result<Byte> = iter.parse();
 /// assert_eq!(result, Err(Error::UnexpectedEndOfFile));
 /// ```
-/// 
-/// Parsing a `Byte` instead of using `iter.next()` is a convenient way to convert the `Option<u8>`
-/// returned by the iterator into a `Result<>` with a meaningful error type. The parsing of all
-/// other structures in this library never read `u8`s directly from the iterator, they parse
-/// `Byte`s instead.
 pub struct Byte(pub u8);
 
-impl WasmBinaryParseProxy for Byte {
-    type Inner = u8;
-
+impl WasmBinaryParse for Byte {
     fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {
         match bin.next() {
             Some(byte) => Ok(Byte(byte)),
             None => Err(Error::UnexpectedEndOfFile)?,
         }
     }
-
+}
+impl WasmBinaryParseProxy for Byte {
+    type Inner = u8;
     fn unwrap(self) -> Self::Inner { self.0 }
 }
 

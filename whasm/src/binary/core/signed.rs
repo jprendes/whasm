@@ -1,5 +1,9 @@
-//! This module defines the parsing of signed integer numbers
-//! (`i8`, `i16`, `i32`, `i64` and `isize`).
+//! This module defines the parsing of signed integer numbers.
+//! 
+//! Integer numbers are encoded with the LEB-128 format.
+//! The signed integer types are `i8`, `i16`, `i32`, `i64` and `isize`.
+//! 
+//! # Example
 //! 
 //! ```
 //! # use whasm::binary::WasmBinary;
@@ -8,9 +12,9 @@
 //! assert_eq!(result, -42);
 //! ```
 //! 
-//! The [WebAssembly Specification](https://webassembly.github.io/spec/) specifies that signed
-//! integer numbers should be encoded using signed LEB-128 encoding. This means that any number
-//! can be encoded with different number of bytes.
+//! The LEB-128 encoding for a number is not unique.
+//! A number can be encoded with more bytes than strictly necessary by adding leading zeros or ones
+//! (depending on the sign).
 //! 
 //! ```
 //! # use whasm::binary::WasmBinary;

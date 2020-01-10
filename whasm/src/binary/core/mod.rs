@@ -1,3 +1,5 @@
+//! This module defines the parsing of low level elements required to parse higher level structures.
+
 pub mod array;
 pub mod byte;
 pub mod float;
