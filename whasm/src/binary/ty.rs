@@ -1,3 +1,5 @@
+//! This module defines the parsing of a WebAssembly types.
+
 use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, Error};
 use crate::structure::ty;
 

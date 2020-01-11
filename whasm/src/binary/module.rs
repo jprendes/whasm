@@ -1,4 +1,7 @@
-use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, Error, core::proxy::WasmBinaryParseProxy, core::sized::{Sized, Consume}, core::vec::UnwrappingVec, core::vec::CompactVec};
+//! This module defines the parsing of a WebAssembly module.
+
+use crate::binary::{WasmBinary, WasmBinaryParse, WasmBinaryParseProxy, Byte, Result, Error};
+use crate::binary::{Sized, Consume, UnwrappingVec, CompactVec};
 use crate::structure::{module, idx};
 
 impl WasmBinaryParse for (String, Consume) {
@@ -18,7 +21,7 @@ impl WasmBinaryParse for module::Module {
             return Err(Error::InvalidPreambleVersion)
         }
 
-        let mut func_types: Vec<idx::Type> = vec![];
+        let mut func_types = vec![];
         let mut result = module::Module::default();
 
         let mut bin = bin.peekable();

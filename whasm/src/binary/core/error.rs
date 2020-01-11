@@ -1,4 +1,7 @@
-use super::Byte;
+//! This module defines the different error conditions that can be found while parsing a
+//! WebAssembly binary file.
+
+use crate::binary::Byte;
 use err_derive::Error;
 
 #[derive(Debug, Error, PartialEq)]

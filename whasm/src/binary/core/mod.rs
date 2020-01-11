@@ -2,10 +2,12 @@
 
 pub mod array;
 pub mod byte;
+pub mod error;
 pub mod float;
-pub mod proxy;
+pub mod result;
 pub mod signed;
 pub mod sized;
 pub mod string;
+pub mod traits;
 pub mod unsigned;
 pub mod vec;

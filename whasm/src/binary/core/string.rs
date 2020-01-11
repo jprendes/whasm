@@ -13,7 +13,7 @@
 //! assert_eq!(result, "Hello World! 💖");
 //! ```
 
-use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, core::proxy::WasmBinaryParseProxy, core::vec::UnwrappingVec};
+use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, WasmBinaryParseProxy, UnwrappingVec};
 
 impl WasmBinaryParse for String {
     fn parse<Binary: WasmBinary>(bin: &mut Binary) -> Result<Self> {

@@ -1,3 +1,5 @@
+//! This module defines the parsing of instructions and expressions found in WebAssembly.
+
 use crate::binary::{WasmBinaryParse, WasmBinary, Result, Byte, Error};
 use crate::structure::{ty, instr, instr::Instr};
 

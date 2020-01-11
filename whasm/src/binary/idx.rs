@@ -1,3 +1,5 @@
+//! This module defines the parsing of the different indexes found WebAssembly.
+
 use crate::binary::{WasmBinaryParse, WasmBinary, Result};
 use crate::structure::idx;
 

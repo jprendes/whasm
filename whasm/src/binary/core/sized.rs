@@ -4,11 +4,11 @@
 //! indicating the size in bytes of the encoded value.
 //! 
 //! The helper type `Consume` consumes all bytes available in the iterator. This is useful to skip
-//! the parsing of a Sized element.
+//! the parsing of a `Sized<_>` element.
 //! 
 //! # Example
 //! 
-//! After parsing `unwrap` can be used to obtain the wrapped value.
+//! After parsing, `unwrap` can be used to obtain the wrapped value.
 //! 
 //! ```
 //! # use whasm::binary::{WasmBinary, WasmBinaryParseProxy, Byte, Result, Error};
